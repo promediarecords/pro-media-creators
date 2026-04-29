@@ -1,60 +1,962 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pro Media Creators</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pro Media Creators — Power. Creativity. Results.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-body{background:#ffffff;color:#111;font-family:Arial,sans-serif}
-.card{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:24px;transition:.2s}
-.card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.btn{padding:14px 24px;border-radius:10px;font-weight:bold}
-.primary{background:#4f46e5;color:#fff}
-.secondary{border:1px solid #4f46e5;color:#4f46e5}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C8A951;
+  --gold-lt:#E2C46A;
+  --gold-dim:rgba(200,169,81,.10);
+  --gold-border:rgba(200,169,81,.20);
+  --gold-glow:rgba(200,169,81,.25);
+  --ink:#03050E;
+  --ink2:#060914;
+  --ink3:#0A0F20;
+  --cream:#F2EDE4;
+  --text:#ECE8E0;
+  --muted:rgba(236,232,224,.50);
+  --faint:rgba(236,232,224,.10);
+  --red:#E03C2F;
+  --blue:#1A6FD4;
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;line-height:1.7;cursor:none}
+
+/* CURSOR */
+.cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease;opacity:.6}
+
+/* NOISE OVERLAY */
+body::after{content:'';position:fixed;inset:0;opacity:.03;pointer-events:none;z-index:1000;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
+
+/* ──────────── NAV ──────────── */
+header{position:fixed;top:0;left:0;right:0;z-index:500;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;border-bottom:1px solid var(--gold-border);background:rgba(3,5,14,.85);backdrop-filter:blur(28px)}
+.logo{display:flex;flex-direction:column}
+.logo-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.18em;color:var(--gold-lt);line-height:1}
+.logo-tagline{font-size:9px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;margin-top:3px}
+nav a{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;margin-left:32px;transition:color .2s}
+nav a:hover{color:var(--gold-lt)}
+.nav-btn{border:1px solid var(--gold-border);color:var(--gold-lt);padding:9px 20px;font-size:9px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;text-decoration:none;transition:all .22s;margin-left:24px}
+.nav-btn:hover{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+
+/* ──────────── HERO ──────────── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:68px 0 0;position:relative;overflow:hidden}
+
+/* animated gradient orbs */
+.hero-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;animation:drift 14s ease-in-out infinite}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,rgba(200,169,81,.15),transparent 70%);top:-10%;left:-10%;animation-delay:0s}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,rgba(26,111,212,.10),transparent 70%);bottom:-5%;right:-5%;animation-delay:-6s}
+.hero-orb-3{width:400px;height:400px;background:radial-gradient(circle,rgba(200,169,81,.08),transparent 70%);bottom:20%;left:35%;animation-delay:-3s}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-25px) scale(1.05)}}
+
+.hero-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(200,169,81,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(200,169,81,.035) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 20%,transparent 90%)}
+
+/* large italic ENERGY text behind hero */
+.hero-bg-text{position:absolute;bottom:-4%;left:-2%;font-family:'Bebas Neue',sans-serif;font-size:clamp(160px,22vw,360px);line-height:.85;letter-spacing:.02em;color:rgba(200,169,81,.04);pointer-events:none;white-space:nowrap;z-index:0;user-select:none}
+
+.hero-inner{display:grid;grid-template-columns:1fr 420px;gap:0;align-items:flex-end;padding:0 52px 80px;position:relative;z-index:2;width:100%;max-width:1400px;margin:0 auto}
+
+.hero-left{}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--gold-border);padding:7px 18px;font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;background:var(--gold-dim)}
+.hero-pill i{width:7px;height:7px;border-radius:50%;background:var(--gold-lt);animation:blink 2.2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3;transform:scale(1.5)}}
+
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,10vw,148px);line-height:.88;letter-spacing:.03em;color:var(--text)}
+.hero h1 .line-gold{color:var(--gold-lt)}
+.hero h1 .line-outline{-webkit-text-stroke:1px rgba(236,232,224,.35);color:transparent}
+
+.hero-sub{font-size:16px;font-weight:300;color:var(--muted);max-width:520px;margin:28px 0 0;line-height:1.85}
+.hero-actions{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--ink);padding:15px 36px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:all .22s;display:inline-block;position:relative;overflow:hidden}
+.btn-primary::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.15);transform:translateX(-110%) skewX(-15deg);transition:transform .4s ease}
+.btn-primary:hover::after{transform:translateX(110%) skewX(-15deg)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(200,169,81,.35)}
+.btn-outline{border:1px solid rgba(236,232,224,.2);color:var(--text);padding:15px 36px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;transition:all .22s;display:inline-block}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold-lt)}
+
+/* hero right — stat stack */
+.hero-right{padding-bottom:8px}
+.hero-stat-stack{display:flex;flex-direction:column;gap:2px}
+.hero-stat{border:1px solid var(--gold-border);padding:26px 28px;background:rgba(3,5,14,.6);backdrop-filter:blur(16px);position:relative;overflow:hidden;transition:background .3s}
+.hero-stat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.hero-stat:hover{background:var(--gold-dim)}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold-lt);line-height:1;letter-spacing:.04em}
+.hero-stat-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.hero-stat-desc{font-size:12px;color:rgba(236,232,224,.35);margin-top:6px;line-height:1.5}
+
+/* ──────────── TICKER ──────────── */
+.ticker{overflow:hidden;border-top:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border);padding:14px 0;background:rgba(200,169,81,.05)}
+.ticker-track{display:flex;animation:slide 28s linear infinite;white-space:nowrap}
+.ticker-track span{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.25em;color:var(--gold);padding:0 36px}
+.ticker-track span::after{content:'◈';margin-left:36px;opacity:.35;font-size:9px}
+@keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ──────────── SECTION BASE ──────────── */
+section{padding:110px 52px;position:relative}
+.container{max-width:1240px;margin:0 auto}
+.s-tag{display:flex;align-items:center;gap:12px;font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.s-tag::before{content:'';width:28px;height:1px;background:var(--gold)}
+h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,6vw,76px);line-height:.93;letter-spacing:.04em;color:var(--text)}
+.s-lead{font-size:17px;font-weight:300;color:var(--muted);max-width:540px;margin-top:18px;line-height:1.85}
+
+/* ──────────── IDENTITY SPLIT ──────────── */
+#identity{background:var(--ink2);border-top:1px solid var(--gold-border)}
+.identity-top{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:64px}
+.id-half{padding:56px 48px;border:1px solid var(--gold-border);position:relative;overflow:hidden;transition:all .3s}
+.id-half:hover{background:var(--gold-dim)}
+.id-half::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.id-half.creative::before{background:linear-gradient(90deg,var(--gold),var(--gold-lt))}
+.id-half.tech::before{background:linear-gradient(90deg,var(--blue),var(--gold))}
+.id-half:hover::before{transform:scaleX(1)}
+.id-icon{font-size:48px;margin-bottom:24px;display:block;line-height:1}
+.id-half h3{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:.06em;color:var(--text);margin-bottom:14px}
+.id-half p{font-size:14px;color:var(--muted);line-height:1.8}
+.id-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.id-pill{font-size:9px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--gold-border);color:var(--gold);padding:5px 12px}
+
+.identity-bottom{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:2px}
+.id-stat{border:1px solid var(--gold-border);padding:32px 28px;text-align:center;transition:background .3s;position:relative;overflow:hidden}
+.id-stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .4s;transform-origin:center}
+.id-stat:hover{background:var(--gold-dim)}
+.id-stat:hover::after{transform:scaleX(1)}
+.id-stat-num{font-family:'Bebas Neue',sans-serif;font-size:54px;color:var(--gold-lt);line-height:1}
+.id-stat-label{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* ──────────── SERVICES ──────────── */
+#services{background:var(--ink)}
+.services-wrap{margin-top:64px}
+.services-row{display:grid;grid-template-columns:200px 1fr;border:1px solid var(--gold-border);margin-bottom:-1px;position:relative;overflow:hidden;transition:all .3s}
+.services-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:top;transition:transform .4s ease}
+.services-row:hover::before{transform:scaleY(1)}
+.services-row:last-child{margin-bottom:0}
+.services-num{padding:36px 32px;border-right:1px solid var(--gold-border);display:flex;align-items:flex-start;flex-direction:column;gap:14px}
+.services-num span{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--gold-border);line-height:1;transition:color .3s}
+.services-row:hover .services-num span{color:var(--gold)}
+.srv-badge{font-size:8px;letter-spacing:.22em;text-transform:uppercase;border:1px solid var(--gold-border);color:var(--gold);padding:4px 10px;width:fit-content}
+.services-body{padding:36px 44px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;transition:background .3s}
+.services-row:hover .services-body{background:var(--gold-dim)}
+.services-title{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.05em;color:var(--text);grid-column:1/-1;margin-bottom:2px}
+.services-desc{font-size:14px;color:var(--muted);line-height:1.75}
+.services-tags{display:flex;flex-wrap:wrap;gap:8px;align-self:start}
+.s-chip{font-size:9px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--gold-border);color:var(--gold);padding:5px 12px;transition:all .2s}
+.services-row:hover .s-chip{border-color:rgba(200,169,81,.5)}
+
+/* ──────────── RESULTS / PROOF ──────────── */
+#results{background:var(--ink3);border-top:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border)}
+.results-intro{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:64px}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.result-card{border:1px solid var(--gold-border);padding:40px 36px;position:relative;overflow:hidden;transition:all .3s;background:rgba(10,15,32,.6)}
+.result-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s}
+.result-card:hover{background:var(--gold-dim)}
+.result-card:hover::before{opacity:1}
+.result-emoji{font-size:36px;margin-bottom:20px;display:block}
+.result-client{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.result-headline{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:14px}
+.result-body{font-size:13px;color:var(--muted);line-height:1.75}
+.result-metric{margin-top:20px;padding-top:16px;border-top:1px solid var(--gold-border);display:flex;align-items:center;gap:10px}
+.result-metric-num{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold-lt);line-height:1}
+.result-metric-label{font-size:11px;color:var(--muted);line-height:1.4}
+
+/* ──────────── APPS ──────────── */
+#apps{background:var(--ink)}
+.apps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:60px;border:1px solid var(--gold-border)}
+.app-card{padding:40px 34px;border-right:1px solid var(--gold-border);border-bottom:1px solid var(--gold-border);position:relative;overflow:hidden;transition:all .3s;cursor:default}
+.app-card:nth-child(3n){border-right:none}
+.app-card:nth-last-child(-n+3){border-bottom:none}
+.app-card:hover{background:var(--gold-dim)}
+.app-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(200,169,81,.04));pointer-events:none}
+.app-icon{font-size:32px;margin-bottom:18px;display:block;line-height:1}
+.app-card h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;margin-bottom:10px;color:var(--text)}
+.app-card p{font-size:13px;color:var(--muted);line-height:1.75}
+.app-for{display:inline-block;margin-top:14px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--gold-border)}
+
+/* ──────────── PROCESS ──────────── */
+#process{background:var(--ink2)}
+.process-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:64px;border:1px solid var(--gold-border)}
+.p-step{padding:36px 28px;border-right:1px solid var(--gold-border);position:relative;transition:background .3s}
+.p-step:last-child{border-right:none}
+.p-step:hover{background:var(--gold-dim)}
+.p-step::after{content:'→';position:absolute;top:36px;right:-14px;font-size:18px;color:var(--gold-border);z-index:2}
+.p-step:last-child::after{display:none}
+.p-step-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--gold-border);line-height:1;margin-bottom:16px;transition:color .3s}
+.p-step:hover .p-step-num{color:var(--gold)}
+.p-step h4{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.06em;color:var(--gold-lt);margin-bottom:10px}
+.p-step p{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* ──────────── WHO WE SERVE ──────────── */
+#clients{background:var(--ink);border-top:1px solid var(--gold-border)}
+.clients-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px}
+.client-card{border:1px solid var(--gold-border);padding:36px 28px;text-align:center;transition:all .25s;position:relative;overflow:hidden}
+.client-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left}
+.client-card:hover::before{transform:scaleX(1)}
+.client-card:hover{background:var(--gold-dim)}
+.client-icon{font-size:38px;margin-bottom:18px;display:block}
+.client-card h4{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.08em;color:var(--text);margin-bottom:10px}
+.client-card p{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* ──────────── PACKAGES ──────────── */
+#packages{background:var(--ink3);border-top:1px solid var(--gold-border)}
+.pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:60px}
+.pkg{border:1px solid var(--gold-border);padding:48px 36px;position:relative;transition:border-color .3s;overflow:hidden}
+.pkg::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:0;transition:opacity .3s}
+.pkg:hover::before{opacity:1}
+.pkg:hover{border-color:rgba(200,169,81,.4)}
+.pkg.featured{border-color:var(--gold);background:rgba(200,169,81,.06)}
+.pkg.featured::before{opacity:1}
+.pkg-badge{position:absolute;top:-1px;left:32px;background:var(--gold);color:var(--ink);font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:.2em;padding:5px 14px}
+.pkg-tier{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.pkg-name{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:.06em;color:var(--text);margin-bottom:4px}
+.pkg.featured .pkg-name{color:var(--gold-lt)}
+.pkg-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-top:14px;padding-top:18px;border-top:1px solid var(--gold-border)}
+.pkg-list{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.pkg-item{font-size:13px;color:var(--text);display:flex;align-items:flex-start;gap:10px}
+.pkg-item::before{content:'✦';color:var(--gold);font-size:9px;flex-shrink:0;margin-top:5px}
+.pkg-link{display:inline-block;margin-top:32px;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.2em;color:var(--gold-lt);text-decoration:none;border-bottom:1px solid var(--gold-border);padding-bottom:2px;transition:all .2s}
+.pkg-link:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ──────────── VIDEO ──────────── */
+#video{background:var(--ink2);border-top:1px solid var(--gold-border)}
+.video-frame{margin-top:52px;border:1px solid var(--gold-border);padding:6px;background:rgba(200,169,81,.04)}
+.video-inner{position:relative;padding-top:56.25%;overflow:hidden}
+.video-inner iframe{position:absolute;inset:0;width:100%;height:100%}
+
+/* ──────────── MANIFESTO STRIP ──────────── */
+#manifesto{background:var(--gold);padding:80px 52px;border:none}
+.manifesto-inner{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.manifesto-text h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,7vw,88px);line-height:.88;letter-spacing:.04em;color:var(--ink)}
+.manifesto-text p{font-size:16px;font-weight:400;color:rgba(3,5,14,.7);line-height:1.85;margin-top:24px}
+.manifesto-list{display:flex;flex-direction:column;gap:16px}
+.manifesto-item{display:flex;align-items:flex-start;gap:16px;padding:20px 24px;background:rgba(3,5,14,.1);border-left:2px solid var(--ink)}
+.manifesto-item-icon{font-size:24px;flex-shrink:0;line-height:1}
+.manifesto-item-text{font-size:14px;color:rgba(3,5,14,.8);line-height:1.6}
+.manifesto-item-text strong{display:block;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.05em;color:var(--ink);margin-bottom:4px}
+
+/* ──────────── CONTACT ──────────── */
+#contact{background:var(--ink2);border-top:1px solid var(--gold-border);overflow:hidden}
+#contact::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;background:radial-gradient(ellipse,rgba(200,169,81,.06),transparent 70%);pointer-events:none;filter:blur(80px)}
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:56px;position:relative;z-index:2}
+.c-box{border:1px solid var(--gold-border);padding:52px 44px;transition:background .3s;position:relative;overflow:hidden}
+.c-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:0;transition:opacity .3s}
+.c-box:hover{background:var(--gold-dim)}
+.c-box:hover::before{opacity:1}
+.c-label{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:block}
+.c-val{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.06em;color:var(--text);line-height:1.4}
+.c-val a{color:var(--gold-lt);text-decoration:none;display:block;margin-bottom:4px;transition:color .2s}
+.c-val a:hover{color:var(--gold)}
+.c-note{font-size:14px;color:var(--muted);line-height:1.8;margin-top:16px}
+.c-btns{display:flex;gap:12px;margin-top:36px;flex-wrap:wrap}
+
+/* ──────────── FOOTER ──────────── */
+footer{background:var(--ink);border-top:1px solid var(--gold-border);padding:44px 52px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.footer-links{display:flex;gap:28px}
+.footer-links a{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--gold-lt)}
+.footer-copy{font-size:11px;color:var(--muted);letter-spacing:.1em}
+
+/* ──────────── REVEAL ──────────── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.reveal-left{opacity:0;transform:translateX(-24px);transition:opacity .7s ease,transform .7s ease}
+.reveal-left.in{opacity:1;transform:none}
+.reveal-right{opacity:0;transform:translateX(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal-right.in{opacity:1;transform:none}
+
+/* ──────────── MOBILE ──────────── */
+@media(max-width:900px){
+  header{padding:0 24px}
+  nav{display:none}
+  section{padding:72px 24px}
+  .hero-inner{grid-template-columns:1fr;gap:48px;padding:0 24px 60px}
+  .hero-right{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .hero-stat-stack{display:contents}
+  .hero h1{font-size:clamp(60px,18vw,100px)}
+  .identity-top{grid-template-columns:1fr}
+  .identity-bottom{grid-template-columns:1fr 1fr}
+  .services-row{grid-template-columns:1fr}
+  .services-num{border-right:none;border-bottom:1px solid var(--gold-border);padding:20px 24px}
+  .services-body{grid-template-columns:1fr;padding:24px}
+  .results-intro{grid-template-columns:1fr;gap:24px}
+  .results-grid{grid-template-columns:1fr}
+  .apps-grid{grid-template-columns:1fr 1fr}
+  .app-card:nth-child(3n){border-right:1px solid var(--gold-border)}
+  .app-card:nth-child(2n){border-right:none}
+  .process-steps{grid-template-columns:1fr 1fr}
+  .p-step{border-bottom:1px solid var(--gold-border)}
+  .p-step::after{display:none}
+  .clients-grid{grid-template-columns:1fr 1fr}
+  .pkg-grid{grid-template-columns:1fr}
+  .manifesto-inner{grid-template-columns:1fr}
+  .contact-wrap{grid-template-columns:1fr}
+  footer{flex-direction:column;text-align:center;padding:36px 24px}
+  .footer-links{justify-content:center;flex-wrap:wrap}
+  .hero-bg-text{font-size:clamp(80px,28vw,200px);bottom:-2%}
+}
+@media(max-width:600px){
+  .apps-grid{grid-template-columns:1fr}
+  .app-card:nth-child(2n){border-right:1px solid var(--gold-border)}
+  .app-card:nth-child(n){border-right:1px solid var(--gold-border)}
+  .identity-bottom{grid-template-columns:1fr 1fr}
+  .clients-grid{grid-template-columns:1fr}
+  .hero-right{grid-template-columns:1fr}
+}
 </style>
 </head>
-
 <body>
 
-<div class="text-center py-12">
-<h1 class="text-4xl font-bold text-indigo-600">PRO MEDIA CREATORS</h1>
-<p class="text-gray-500 mt-2">Digital Infrastructure • AI Systems • Growth Engineering</p>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
+
+<!-- NAV -->
+<header>
+  <div class="logo">
+    <div class="logo-name">Pro Media Creators</div>
+    <div class="logo-tagline">Creative · Tech · Growth</div>
+  </div>
+  <nav>
+    <a href="#identity">About</a>
+    <a href="#services">Services</a>
+    <a href="#results">Results</a>
+    <a href="#apps">Apps</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-btn">Start a Project</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-bg-text">POWER</div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-pill"><i></i>Nigeria's Creative + Tech Powerhouse</div>
+      <h1>
+        We Engineer<br>
+        <span class="line-gold">Revenue.</span><br>
+        <span class="line-outline">We Amplify</span><br>
+        Brands.
+      </h1>
+      <p class="hero-sub">Pro Media Creators fuses creative media power with digital technology — building apps, campaigns, AI systems, and brand identities that make businesses grow faster.</p>
+      <div class="hero-actions">
+        <a href="#services" class="btn-primary">Explore Services</a>
+        <a href="#contact" class="btn-outline">Start Your Project</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-stat-stack">
+        <div class="hero-stat">
+          <div class="hero-stat-num">10+</div>
+          <div class="hero-stat-label">Apps Launched</div>
+          <div class="hero-stat-desc">Custom-built digital products now live in market</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">&lt;2</div>
+          <div class="hero-stat-label">Years in Business</div>
+          <div class="hero-stat-desc">Young, fast-moving, and already delivering results</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">6</div>
+          <div class="hero-stat-label">Core Service Areas</div>
+          <div class="hero-stat-desc">Tech · Media · AI · Brand · Growth · Consulting</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Media Production</span><span>App Development</span><span>AI Systems</span><span>Brand Strategy</span><span>Creative Campaigns</span><span>Growth Engineering</span><span>CRM Platforms</span><span>Video Ads</span><span>Business Automation</span><span>Startup Consulting</span>
+    <span>Media Production</span><span>App Development</span><span>AI Systems</span><span>Brand Strategy</span><span>Creative Campaigns</span><span>Growth Engineering</span><span>CRM Platforms</span><span>Video Ads</span><span>Business Automation</span><span>Startup Consulting</span>
+  </div>
 </div>
 
-<div class="max-w-5xl mx-auto px-6">
+<!-- IDENTITY SPLIT -->
+<section id="identity">
+  <div class="container">
+    <div class="s-tag reveal">Who We Are</div>
+    <h2 class="reveal">Two Forces.<br>One Company.</h2>
+    <p class="s-lead reveal">We are not a typical agency. We are not just a tech company. We are the intersection of creative power and digital engineering — built to make your business grow.</p>
 
-<h2 class="text-2xl font-bold mb-4 text-center">Watch What We Do</h2>
+    <div class="identity-top">
+      <div class="id-half creative reveal-left">
+        <span class="id-icon">🎬</span>
+        <h3>Creative Media Power</h3>
+        <p>We tell stories that sell. From high-impact brand films to ad campaigns, social media content to creative direction — we make your brand impossible to ignore. Our creative team understands attention, emotion, and conversion.</p>
+        <div class="id-pills">
+          <span class="id-pill">Video Production</span>
+          <span class="id-pill">Brand Films</span>
+          <span class="id-pill">Ad Campaigns</span>
+          <span class="id-pill">Creative Direction</span>
+          <span class="id-pill">Social Content</span>
+        </div>
+      </div>
+      <div class="id-half tech reveal-right">
+        <span class="id-icon">⚡</span>
+        <h3>Digital Tech Engineering</h3>
+        <p>We build systems that generate revenue, automate operations, and scale businesses. Custom apps, AI integrations, dashboards, CRMs — every solution is engineered to give your business an unfair advantage.</p>
+        <div class="id-pills">
+          <span class="id-pill">App Development</span>
+          <span class="id-pill">AI Integration</span>
+          <span class="id-pill">Business Automation</span>
+          <span class="id-pill">CRM Systems</span>
+          <span class="id-pill">Growth Systems</span>
+        </div>
+      </div>
+    </div>
 
-<div class="mb-12">
-<iframe class="w-full h-96 rounded-xl" src="https://www.youtube.com/embed/jb2ZfNrXWT4"></iframe>
-</div>
+    <div class="identity-bottom">
+      <div class="id-stat reveal">
+        <div class="id-stat-num">10+</div>
+        <div class="id-stat-label">Apps Launched</div>
+      </div>
+      <div class="id-stat reveal">
+        <div class="id-stat-num">&lt;2</div>
+        <div class="id-stat-label">Years in Business</div>
+      </div>
+      <div class="id-stat reveal">
+        <div class="id-stat-num">6</div>
+        <div class="id-stat-label">Core Service Areas</div>
+      </div>
+      <div class="id-stat reveal">
+        <div class="id-stat-num">🔥</div>
+        <div class="id-stat-label">Growing Fast</div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div class="grid md:grid-cols-3 gap-6">
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="s-tag reveal">What We Do</div>
+    <h2 class="reveal">Six Ways We<br>Build Your Growth</h2>
+    <p class="s-lead reveal">Every service is designed with one goal — to move your business forward faster than you could alone.</p>
 
-<div class="card">
-<h3 class="text-xl font-bold">Web & App Development</h3>
-<p class="text-gray-500 mt-2">Scalable websites and apps for business growth.</p>
-</div>
+    <div class="services-wrap" style="margin-top:64px">
 
-<div class="card">
-<h3 class="text-xl font-bold">Media & Content Production</h3>
-<p class="text-gray-500 mt-2">Music videos, ads, and creative storytelling.</p>
-</div>
+      <div class="services-row reveal">
+        <div class="services-num">
+          <span>01</span>
+          <span class="srv-badge">Tech</span>
+        </div>
+        <div class="services-body">
+          <div class="services-title">App & Platform Development</div>
+          <div class="services-desc">We engineer custom web and mobile apps — business management systems, customer-facing platforms, automation tools, and more. Built clean, scalable, and exactly to your business logic.</div>
+          <div class="services-tags">
+            <span class="s-chip">Web Apps</span>
+            <span class="s-chip">Mobile Apps</span>
+            <span class="s-chip">Admin Dashboards</span>
+            <span class="s-chip">Business Portals</span>
+          </div>
+        </div>
+      </div>
 
-<div class="card">
-<h3 class="text-xl font-bold">AI Growth Systems</h3>
-<p class="text-gray-500 mt-2">Automation and AI tools to grow your business.</p>
-</div>
+      <div class="services-row reveal">
+        <div class="services-num">
+          <span>02</span>
+          <span class="srv-badge">AI</span>
+        </div>
+        <div class="services-body">
+          <div class="services-title">AI Systems & Automation</div>
+          <div class="services-desc">We integrate AI directly into your business operations. Smart chatbots, automated workflows, content generation systems, data analysis tools — making your business run faster with less manual effort.</div>
+          <div class="services-tags">
+            <span class="s-chip">AI Chatbots</span>
+            <span class="s-chip">Workflow Automation</span>
+            <span class="s-chip">Smart Tools</span>
+            <span class="s-chip">Data Systems</span>
+          </div>
+        </div>
+      </div>
 
-</div>
+      <div class="services-row reveal">
+        <div class="services-num">
+          <span>03</span>
+          <span class="srv-badge">Brand</span>
+        </div>
+        <div class="services-body">
+          <div class="services-title">Brand Strategy & Identity</div>
+          <div class="services-desc">We don't just design logos — we build brand systems that command attention, communicate value, and position you as the obvious choice in your market. Strategy before aesthetics, always.</div>
+          <div class="services-tags">
+            <span class="s-chip">Brand Identity</span>
+            <span class="s-chip">Strategy</span>
+            <span class="s-chip">Visual System</span>
+            <span class="s-chip">Positioning</span>
+          </div>
+        </div>
+      </div>
 
-<div class="text-center mt-12 space-x-4">
-<a href="mailto:promediacenter4music@gmail.com" class="btn primary">Email Us</a>
-<a href="https://wa.me/2349138205390" class="btn secondary">WhatsApp</a>
-</div>
+      <div class="services-row reveal">
+        <div class="services-num">
+          <span>04</span>
+          <span class="srv-badge">Media</span>
+        </div>
+        <div class="services-body">
+          <div class="services-title">Video Production & Ads</div>
+          <div class="services-desc">High-impact brand films, product ads, explainer videos, and social media content that captures attention and drives action. We produce visuals that make your brand look elite — because it is.</div>
+          <div class="services-tags">
+            <span class="s-chip">Brand Films</span>
+            <span class="s-chip">Product Ads</span>
+            <span class="s-chip">Social Content</span>
+            <span class="s-chip">Explainers</span>
+          </div>
+        </div>
+      </div>
 
-</div>
+      <div class="services-row reveal">
+        <div class="services-num">
+          <span>05</span>
+          <span class="srv-badge">Growth</span>
+        </div>
+        <div class="services-body">
+          <div class="services-title">Digital Growth & Marketing</div>
+          <div class="services-desc">We drive real, measurable growth — SEO systems, paid ad management, social media strategy, content engines, and conversion optimization. Not just traffic. Revenue.</div>
+          <div class="services-tags">
+            <span class="s-chip">SEO</span>
+            <span class="s-chip">Paid Ads</span>
+            <span class="s-chip">Social Strategy</span>
+            <span class="s-chip">Conversion</span>
+          </div>
+        </div>
+      </div>
 
+      <div class="services-row reveal">
+        <div class="services-num">
+          <span>06</span>
+          <span class="srv-badge">Consult</span>
+        </div>
+        <div class="services-body">
+          <div class="services-title">Startup & Business Consulting</div>
+          <div class="services-desc">Idea validation, business model structuring, go-to-market strategy, team systems. We sit with you as a strategic partner — not just a vendor — and help you build a business that actually works.</div>
+          <div class="services-tags">
+            <span class="s-chip">Idea Validation</span>
+            <span class="s-chip">Business Model</span>
+            <span class="s-chip">Go-to-Market</span>
+            <span class="s-chip">Advisory</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE BUILD -->
+<section id="results">
+  <div class="container">
+    <div class="results-intro">
+      <div>
+        <div class="s-tag reveal">What We Build</div>
+        <h2 class="reveal">The Kind of Work<br>We Do for Clients</h2>
+      </div>
+      <p class="s-lead reveal" style="margin-top:0">These are the types of projects we take on — and the kind of outcomes our clients come back for. Every build is custom. Every solution is real.</p>
+    </div>
+
+    <div class="results-grid">
+      <div class="result-card reveal">
+        <span class="result-emoji">🛒</span>
+        <div class="result-client">Sample Build — Retail</div>
+        <div class="result-headline">Manual Process → Full E-commerce Platform</div>
+        <div class="result-body">A retail business processing orders over WhatsApp gets a full custom e-commerce app — payment integration, inventory tracking, admin dashboard, and order management. One system. Everything automated.</div>
+        <div class="result-metric">
+          <div class="result-metric-num">→</div>
+          <div class="result-metric-label">From chaos to a system<br>that runs itself</div>
+        </div>
+      </div>
+
+      <div class="result-card reveal">
+        <span class="result-emoji">🏥</span>
+        <div class="result-client">Sample Build — Healthcare</div>
+        <div class="result-headline">Paper Records → Digital Patient Management</div>
+        <div class="result-body">A clinic with no digital infrastructure gets a full patient management platform — appointment booking, medical records, billing, and staff login. Paperless from day one of launch.</div>
+        <div class="result-metric">
+          <div class="result-metric-num">→</div>
+          <div class="result-metric-label">Zero paper. Full control.<br>Built to scale.</div>
+        </div>
+      </div>
+
+      <div class="result-card reveal">
+        <span class="result-emoji">🎬</span>
+        <div class="result-client">Sample Build — Brand Launch</div>
+        <div class="result-headline">New Brand → Professional Visual Identity & Film</div>
+        <div class="result-body">A brand with no presence gets full creative direction — logo, brand identity system, launch video, and social media content. Everything needed to enter the market looking elite from day one.</div>
+        <div class="result-metric">
+          <div class="result-metric-num">→</div>
+          <div class="result-metric-label">From invisible to<br>impossible to ignore</div>
+        </div>
+      </div>
+
+      <div class="result-card reveal">
+        <span class="result-emoji">🤖</span>
+        <div class="result-client">Sample Build — Automation</div>
+        <div class="result-headline">Repetitive Work → AI-Powered Business System</div>
+        <div class="result-body">A business spending hours on manual customer responses gets a custom AI chatbot — handling FAQs, bookings, and follow-ups automatically. The team focuses on what actually matters.</div>
+        <div class="result-metric">
+          <div class="result-metric-num">→</div>
+          <div class="result-metric-label">Less manual work.<br>More output. 24/7.</div>
+        </div>
+      </div>
+
+      <div class="result-card reveal">
+        <span class="result-emoji">🚀</span>
+        <div class="result-client">Sample Build — Startup</div>
+        <div class="result-headline">Raw Idea → Working MVP Ready for Users</div>
+        <div class="result-body">A founder with a concept and no technical team gets a full product — strategy, design, development, and launch. Fast. We take you from a rough idea to a real, working product people can use.</div>
+        <div class="result-metric">
+          <div class="result-metric-num">→</div>
+          <div class="result-metric-label">Zero to live product.<br>Built to validate fast.</div>
+        </div>
+      </div>
+
+      <div class="result-card reveal">
+        <span class="result-emoji">📈</span>
+        <div class="result-client">Sample Build — SME Growth</div>
+        <div class="result-headline">Offline Business → Complete Digital Presence</div>
+        <div class="result-body">An established offline business with no digital footprint gets a brand identity, website, app, and social media launch strategy — everything needed to start attracting clients online from scratch.</div>
+        <div class="result-metric">
+          <div class="result-metric-num">→</div>
+          <div class="result-metric-label">From offline-only to<br>digital-first growth</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO STRIP -->
+<section id="manifesto">
+  <div class="manifesto-inner">
+    <div class="manifesto-text reveal-left">
+      <h2>We Don't Just Build Things.<br>We Build Outcomes.</h2>
+      <p>Every project we take on has a clear goal: make your business more powerful, more profitable, and more scalable than it was before we started. That's our standard.</p>
+    </div>
+    <div class="manifesto-list reveal-right">
+      <div class="manifesto-item">
+        <span class="manifesto-item-icon">🎯</span>
+        <div class="manifesto-item-text">
+          <strong>Strategy First</strong>
+          We plan before we build. Every decision is rooted in your business goals.
+        </div>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-item-icon">⚡</span>
+        <div class="manifesto-item-text">
+          <strong>Speed Without Sacrifice</strong>
+          Fast execution at professional quality. We move quickly and we get it right.
+        </div>
+      </div>
+      <div class="manifesto-item">
+        <span class="manifesto-item-icon">📊</span>
+        <div class="manifesto-item-text">
+          <strong>Results You Can Measure</strong>
+          We track outcomes — not just deliverables. If it's not working, we fix it.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPS PORTFOLIO -->
+<section id="apps">
+  <div class="container">
+    <div class="s-tag reveal">App Portfolio</div>
+    <h2 class="reveal">Every App. Every Industry.<br>Built Custom for You.</h2>
+    <p class="s-lead reveal">For companies, institutions, startups, and individuals — every app is engineered for your exact use case, not copied from a template.</p>
+    <div class="apps-grid">
+      <div class="app-card reveal">
+        <span class="app-icon">🏢</span>
+        <h3>Company Management Apps</h3>
+        <p>Staff portals, HR systems, payroll, internal communication tools, and task management platforms built for your company's workflow.</p>
+        <span class="app-for">For: Businesses & Corporations</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">🛒</span>
+        <h3>E-commerce & Sales Apps</h3>
+        <p>Online stores, product catalogues, payment systems, order tracking, inventory management, and customer-facing sales platforms.</p>
+        <span class="app-for">For: Retailers & Brands</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">📅</span>
+        <h3>Booking & Appointment Apps</h3>
+        <p>Scheduling systems for clinics, salons, consultants, and events. Fully automated with reminders and integrated payments.</p>
+        <span class="app-for">For: Service Businesses</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">📊</span>
+        <h3>Business Intelligence Dashboards</h3>
+        <p>Real-time data tracking, sales reports, KPI monitoring, and analytics tools that give executives a clear view of performance.</p>
+        <span class="app-for">For: Executives & Teams</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">🤖</span>
+        <h3>AI-Powered Business Tools</h3>
+        <p>Custom AI chatbots, automated customer service, smart content generators, and AI-integrated business platforms.</p>
+        <span class="app-for">For: Modern Businesses</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">👤</span>
+        <h3>Personal Productivity Apps</h3>
+        <p>Habit trackers, finance managers, goal planners, personal journals, learning tools, and daily productivity systems.</p>
+        <span class="app-for">For: Individuals & Creators</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">🏥</span>
+        <h3>Institutional Platforms</h3>
+        <p>Apps for hospitals, schools, churches, and NGOs — patient management, student portals, member systems, and donation platforms.</p>
+        <span class="app-for">For: Institutions & NGOs</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">💳</span>
+        <h3>Fintech & Payment Apps</h3>
+        <p>Payment gateways, invoicing systems, expense trackers, savings apps, and financial management tools for businesses and individuals.</p>
+        <span class="app-for">For: Fintech & Finance</span>
+      </div>
+      <div class="app-card reveal">
+        <span class="app-icon">🚀</span>
+        <h3>Startup MVP Development</h3>
+        <p>From idea to first working product. We help startups build and ship their MVP fast, validate with users, and iterate toward growth.</p>
+        <span class="app-for">For: Founders & Startups</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div class="s-tag reveal">How We Work</div>
+    <h2 class="reveal">From Idea to Launch<br>in 5 Steps</h2>
+    <div class="process-steps">
+      <div class="p-step reveal">
+        <div class="p-step-num">01</div>
+        <h4>Discovery</h4>
+        <p>We sit with you, understand your vision, goals, target users, and business model. No guessing. No assumptions.</p>
+      </div>
+      <div class="p-step reveal">
+        <div class="p-step-num">02</div>
+        <h4>Strategy</h4>
+        <p>We map features, tech stack, timeline, and business logic before a single line of code is written.</p>
+      </div>
+      <div class="p-step reveal">
+        <div class="p-step-num">03</div>
+        <h4>Design</h4>
+        <p>We craft the UI/UX wireframes and visual design — clean, intuitive, and built for your exact audience.</p>
+      </div>
+      <div class="p-step reveal">
+        <div class="p-step-num">04</div>
+        <h4>Build</h4>
+        <p>Our team builds with clean, scalable code. You see real progress at every stage of development.</p>
+      </div>
+      <div class="p-step reveal">
+        <div class="p-step-num">05</div>
+        <h4>Launch & Grow</h4>
+        <p>We launch and provide ongoing support, updates, and growth strategy to keep your product scaling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE SERVE -->
+<section id="clients">
+  <div class="container">
+    <div class="s-tag reveal">Who We Serve</div>
+    <h2 class="reveal">Built for Every<br>Kind of Builder</h2>
+    <div class="clients-grid">
+      <div class="client-card reveal">
+        <span class="client-icon">🚀</span>
+        <h4>Startups & Founders</h4>
+        <p>Turn your idea into a real product. We build MVPs, advise on strategy, and help you launch fast with confidence.</p>
+      </div>
+      <div class="client-card reveal">
+        <span class="client-icon">🏢</span>
+        <h4>Small & Medium Businesses</h4>
+        <p>We digitize and scale SMEs with custom apps, automation tools, and complete digital business systems.</p>
+      </div>
+      <div class="client-card reveal">
+        <span class="client-icon">🏥</span>
+        <h4>Hospitals, Schools & NGOs</h4>
+        <p>Custom platforms for institutions — patient management, student portals, donation systems, and member tools.</p>
+      </div>
+      <div class="client-card reveal">
+        <span class="client-icon">👤</span>
+        <h4>Individuals & Creators</h4>
+        <p>Personal apps, productivity tools, and digital platforms for ambitious people who want to get more done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section id="packages">
+  <div class="container">
+    <div class="s-tag reveal">Packages</div>
+    <h2 class="reveal">Choose Your<br>Build Level</h2>
+    <div class="pkg-grid">
+      <div class="pkg reveal">
+        <div class="pkg-tier">Tier 01</div>
+        <div class="pkg-name">Starter</div>
+        <div class="pkg-desc">For individuals and small businesses taking their first digital step.</div>
+        <div class="pkg-list">
+          <div class="pkg-item">Personal or business web app</div>
+          <div class="pkg-item">Basic booking or e-commerce setup</div>
+          <div class="pkg-item">Brand identity design</div>
+          <div class="pkg-item">1 month post-launch support</div>
+        </div>
+        <a href="#contact" class="pkg-link">Get Started →</a>
+      </div>
+      <div class="pkg featured reveal">
+        <div class="pkg-badge">Most Popular</div>
+        <div class="pkg-tier">Tier 02</div>
+        <div class="pkg-name">Business Build</div>
+        <div class="pkg-desc">For companies that need a complete, custom digital business system.</div>
+        <div class="pkg-list">
+          <div class="pkg-item">Full custom business app</div>
+          <div class="pkg-item">CRM, dashboard or internal tool</div>
+          <div class="pkg-item">AI integration & automation</div>
+          <div class="pkg-item">Brand strategy & identity</div>
+          <div class="pkg-item">3 months post-launch support</div>
+        </div>
+        <a href="#contact" class="pkg-link">Get Started →</a>
+      </div>
+      <div class="pkg reveal">
+        <div class="pkg-tier">Tier 03</div>
+        <div class="pkg-name">Enterprise</div>
+        <div class="pkg-desc">For scaling companies and institutions that need end-to-end digital infrastructure.</div>
+        <div class="pkg-list">
+          <div class="pkg-item">Complex multi-feature app</div>
+          <div class="pkg-item">Full business system integration</div>
+          <div class="pkg-item">Dedicated project team</div>
+          <div class="pkg-item">Ongoing AI coaching & training</div>
+          <div class="pkg-item">Priority support & retainer</div>
+        </div>
+        <a href="#contact" class="pkg-link">Get Started →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="s-tag reveal">Get in Touch</div>
+    <h2 class="reveal">Let's Build<br>Something Real</h2>
+    <p class="s-lead reveal">Tell us your idea. We'll engineer it, brand it, and grow it into something that lasts.</p>
+    <div class="contact-wrap">
+      <div class="c-box reveal">
+        <span class="c-label">Email Us</span>
+        <div class="c-val">
+          <a href="mailto:murtalaigbinosaotokiti@gmail.com">murtalaigbinosaotokiti@gmail.com</a>
+        </div>
+        <p class="c-note">Send us your project details and we'll respond within 24 hours with a plan of action.</p>
+        <div class="c-btns">
+          <a href="mailto:murtalaigbinosaotokiti@gmail.com?subject=Project Inquiry - Pro Media Creators" class="btn-primary">Send Email</a>
+        </div>
+      </div>
+      <div class="c-box reveal">
+        <span class="c-label">WhatsApp / Phone</span>
+        <div class="c-val">
+          <a href="https://wa.me/2349020659300?text=Hello Pro Media Creators, I want to discuss a project." target="_blank">+234 902 065 9300</a>
+        </div>
+        <p class="c-note">Prefer to chat directly? Send us a WhatsApp message and let's talk about your project, your goals, and how we can help you build it.</p>
+        <div class="c-btns">
+          <a href="https://wa.me/2349020659300?text=Hello Pro Media Creators, I want to discuss a project." target="_blank" class="btn-outline">WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo">
+    <div class="logo-name">Pro Media Creators</div>
+    <div class="logo-tagline" style="margin-top:5px">Creative · Tech · Growth · AI · Media</div>
+  </div>
+  <div class="footer-links">
+    <a href="#identity">About</a>
+    <a href="#services">Services</a>
+    <a href="#results">Results</a>
+    <a href="#apps">Apps</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Pro Media Creators. All Rights Reserved.</div>
+</footer>
+
+<script>
+// Cursor
+const cur = document.getElementById('cur');
+const curR = document.getElementById('curR');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    curR.style.left = e.clientX + 'px';
+    curR.style.top = e.clientY + 'px';
+  }, 80);
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    curR.style.transform = 'translate(-50%,-50%) scale(1.8)';
+    curR.style.opacity = '.3';
+  });
+  el.addEventListener('mouseleave', () => {
+    curR.style.transform = 'translate(-50%,-50%) scale(1)';
+    curR.style.opacity = '.6';
+  });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => obs.observe(el));
+
+// Animate hero stat numbers
+function animateCount(el, target, duration = 1800) {
+  let start = 0;
+  const step = timestamp => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.floor(eased * target) + (el.dataset.suffix || '');
+    if (progress < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+// Trigger count animation on scroll into view
+const statObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const nums = e.target.querySelectorAll('.hero-stat-num, .id-stat-num');
+      nums.forEach(n => {
+        const raw = n.textContent.replace(/[^0-9]/g,'');
+        const suffix = n.textContent.replace(/[0-9]/g,'');
+        if(raw) {
+          n.dataset.suffix = suffix;
+          animateCount(n, parseInt(raw));
+        }
+      });
+      statObs.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.3});
+document.querySelectorAll('.hero-right,.identity-bottom').forEach(el => statObs.observe(el));
+</script>
 </body>
 </html>
